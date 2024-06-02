@@ -1,19 +1,26 @@
 import axios from 'axios';
+import {WeatherData} from './weatherApiInterface';
 
+const OPENWEATHER_URL: string = 'https://api.openweathermap.org/data/2.5';
 const OPENWEATHER_KEY: string = '35862a50551ab9adbd69336f3ff94a5b';
 
-export interface WeatherData {
-  weatherStatus: string;
-  temperature: number;
-}
-
-export const fetchWeatherData = async (city: string): Promise<WeatherData> => {
+export const fetchWeatherDataOWA = async (
+  location: string,
+): Promise<WeatherData> => {
   try {
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${OPENWEATHER_KEY}`,
-    );
+    const response = await axios.get(`${OPENWEATHER_URL}/weather`, {
+      params: {
+        q: location,
+        appid: OPENWEATHER_KEY,
+      },
+    });
 
-    console.log('Asking for temp in ', city, ': ', response.data);
+    console.log(
+      'openWeatherApi.ts/fetchWeatherDataOWA() - Asking for temp in ',
+      location,
+      ': ',
+      response.data,
+    );
     const data: WeatherData = {
       weatherStatus: response.data.weather.at(0).main,
       temperature: response.data.main.temp,

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {fetchWeatherData, WeatherData} from './src/services/openWeatherApi';
+import {fetchWeatherDataOWA, WeatherData} from './src/services/openWeatherApi';
 
 const locationPinUrl = './src/assets/images/locationPin.png';
 const iconSunUrl = './src/assets/images/iconSun.png';
@@ -50,7 +50,7 @@ function App(): React.JSX.Element {
   };
 
   const seeWeatherData = useCallback(async () => {
-    const weatherData: WeatherData = await fetchWeatherData(location);
+    const weatherData: WeatherData = await fetchWeatherDataOWA(location);
 
     if (weatherData !== undefined) {
       let tempValue = weatherData?.temperature;
