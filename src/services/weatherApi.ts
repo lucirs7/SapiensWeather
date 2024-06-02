@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {WeatherData} from './weatherApiInterface';
 
-const WEATHERAPI_URL = 'http://api.weatherapi.com/v1';
-const WEATHERAPI_KEY = '0d0bd1cfdcc3425f96175517240206';
+const WEATHERAPI_URL: string = 'http://api.weatherapi.com/v1';
+const WEATHERAPI_KEY: string = '0d0bd1cfdcc3425f96175517240206';
 
 export const fetchWeatherDataWA = async (
   location: string,
