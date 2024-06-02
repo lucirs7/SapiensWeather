@@ -4,6 +4,8 @@ import {WeatherData} from './weatherApiInterface';
 const OPENWEATHER_URL: string = 'https://api.openweathermap.org/data/2.5';
 const OPENWEATHER_KEY: string = '35862a50551ab9adbd69336f3ff94a5b';
 
+const KELVIN_TO_CELSIUS: string = '-273,15';
+
 export const fetchWeatherDataOWA = async (
   location: string,
 ): Promise<WeatherData> => {
@@ -21,9 +23,13 @@ export const fetchWeatherDataOWA = async (
       ': ',
       response.data,
     );
+
+    let temperatureValue = response.data.main.temp;
+    temperatureValue = temperatureValue + parseFloat(KELVIN_TO_CELSIUS);
+
     const data: WeatherData = {
       weatherStatus: response.data.weather.at(0).main,
-      temperature: response.data.main.temp,
+      temperature: temperatureValue,
     };
 
     return data;

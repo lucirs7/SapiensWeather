@@ -4,7 +4,9 @@ import {WeatherData} from './weatherApiInterface';
 const WEATHERAPI_URL = 'http://api.weatherapi.com/v1';
 const WEATHERAPI_KEY = '0d0bd1cfdcc3425f96175517240206';
 
-export const fetchWeatherDataWA = async (location: string) => {
+export const fetchWeatherDataWA = async (
+  location: string,
+): Promise<WeatherData> => {
   try {
     const response = await axios.get(`${WEATHERAPI_URL}/current.json`, {
       params: {
@@ -18,10 +20,14 @@ export const fetchWeatherDataWA = async (location: string) => {
       location,
       ': ',
       response.data,
+      ' STATUS=',
+      response.data.current.condition.text,
+      ' TEMP=',
+      response.data.current.temp_c,
     );
     const data: WeatherData = {
-      weatherStatus: response.data.weather.at(0).main,
-      temperature: response.data.main.temp,
+      weatherStatus: response.data.current.condition.text,
+      temperature: response.data.current.temp_c,
     };
 
     return data;

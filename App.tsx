@@ -12,9 +12,15 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {fetchWeatherDataOWA, WeatherData} from './src/services/openWeatherApi';
 
-const locationPinUrl = './src/assets/images/locationPin.png';
+import {
+  getWeatherData,
+  OPENWEATHERAPI,
+  WEATHERAPI,
+  WeatherData,
+} from './src/services/weatherApiInterface';
+
+const iconLocationPinUrl = './src/assets/images/iconLocationPin.png';
 const iconSunUrl = './src/assets/images/iconSun.png';
 const iconCloudsUrl = './src/assets/images/iconClouds.png';
 const iconRainUrl = './src/assets/images/iconRain.png';
@@ -22,8 +28,6 @@ const iconSnowUrl = './src/assets/images/iconSnow.png';
 const iconThunderstormUrl = './src/assets/images/iconThunderstorm.png';
 const iconMistUrl = './src/assets/images/iconMist.png';
 const iconNotFoundUrl = './src/assets/images/iconNotFound.png';
-
-const KELVIN_TO_CELSIUS: string = '-273,15';
 
 const CLEAR = 'Clear';
 const CLOUDS = 'Clouds';
@@ -39,10 +43,19 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.black : Colors.white,
   };
 
+  const [api, setApi] = useState(WEATHERAPI);
   const [location, setLocation] = useState('Madrid');
   const [temperature, setTemperature] = useState(0);
   const [weatherStatus, setWeatherStatus] = useState('Sunny');
   const [weatherIcon, setWeatherIcon] = useState(iconNotFoundUrl);
+
+  const changeApi = () => {
+    if (api === WEATHERAPI) {
+      setApi(OPENWEATHERAPI);
+    } else {
+      setApi(WEATHERAPI);
+    }
+  };
 
   const chooseLocation = (city: string) => {
     setLocation(city);
@@ -50,13 +63,10 @@ function App(): React.JSX.Element {
   };
 
   const seeWeatherData = useCallback(async () => {
-    const weatherData: WeatherData = await fetchWeatherDataOWA(location);
+    const weatherData: WeatherData = await getWeatherData(api, location);
 
     if (weatherData !== undefined) {
-      let tempValue = weatherData?.temperature;
-      tempValue = tempValue + parseFloat(KELVIN_TO_CELSIUS);
-
-      setTemperature(tempValue);
+      setTemperature(weatherData.temperature);
       setWeatherStatus(weatherData.weatherStatus);
       changeWeatherIcon(weatherData.weatherStatus);
     }
@@ -95,22 +105,29 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
       <View>
-        <TouchableOpacity
-          style={styles.locationButton}
-          onPress={seeWeatherData}>
-          <Image style={styles.locationIcon} source={require(locationPinUrl)} />
-          <Text style={styles.locationText}>Choose location</Text>
+        <TouchableOpacity style={styles.locationButton} onPress={changeApi}>
+          <Image
+            style={styles.locationIcon}
+            source={require(iconLocationPinUrl)}
+          />
+          <Text style={styles.locationText}>{api}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.locationButton}
           onPress={() => chooseLocation('Munich')}>
-          <Image style={styles.locationIcon} source={require(locationPinUrl)} />
+          <Image
+            style={styles.locationIcon}
+            source={require(iconLocationPinUrl)}
+          />
           <Text style={styles.locationText}>Munich</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.locationButton}
           onPress={() => chooseLocation('Punta Cana')}>
-          <Image style={styles.locationIcon} source={require(locationPinUrl)} />
+          <Image
+            style={styles.locationIcon}
+            source={require(iconLocationPinUrl)}
+          />
           <Text style={styles.locationText}>Punta Cana</Text>
         </TouchableOpacity>
         <View style={styles.weatherInfoContainer}>
