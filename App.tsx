@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
 import {
@@ -9,7 +8,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -23,14 +21,15 @@ import {
   WeatherData,
 } from './src/services/weatherApiInterface';
 import {MyButton} from './src/components/MyButton';
+import {MyWeatherIcon} from './src/components/MyWeatherIcon';
 
 const iconLocationPinUrl = './src/assets/images/iconLocationPin.png';
-const iconSunUrl = './src/assets/images/iconSun.png';
-const iconCloudsUrl = './src/assets/images/iconClouds.png';
-const iconRainUrl = './src/assets/images/iconRain.png';
-const iconSnowUrl = './src/assets/images/iconSnow.png';
-const iconThunderstormUrl = './src/assets/images/iconThunderstorm.png';
-const iconMistUrl = './src/assets/images/iconMist.png';
+const iconSunUrl = './src/assets/images/iconSunOWA.png';
+const iconCloudsUrl = './src/assets/images/iconCloudsOWA.png';
+const iconRainUrl = './src/assets/images/iconRainOWA.png';
+const iconSnowUrl = './src/assets/images/iconSnowOWA.png';
+const iconThunderstormUrl = './src/assets/images/iconThunderstormOWA.png';
+const iconMistUrl = './src/assets/images/iconMistOWA.png';
 const iconNotFoundUrl = './src/assets/images/iconNotFound.png';
 
 const CLEAR = 'Clear';
@@ -76,7 +75,7 @@ function App(): React.JSX.Element {
     if (weatherData !== undefined) {
       setTemperature(weatherData.temperature);
       setWeatherStatus(weatherData.weatherStatus);
-      changeWeatherIcon(weatherData.weatherStatus);
+      //changeWeatherIcon(weatherData.weatherStatus);
     }
   }, [location]);
 
@@ -84,7 +83,7 @@ function App(): React.JSX.Element {
     seeWeatherData();
   }, []);
 
-  const changeWeatherIcon = (weatherStat: string) => {
+  /*const changeWeatherIcon = (weatherStat: string) => {
     switch (weatherStat) {
       case CLEAR:
       case SUNNY:
@@ -113,7 +112,7 @@ function App(): React.JSX.Element {
         setWeatherIcon(require(iconNotFoundUrl));
         break;
     }
-  };
+  };*/
 
   return (
     <SafeAreaView style={{...styles.container, ...backgroundStyle}}>
@@ -142,13 +141,14 @@ function App(): React.JSX.Element {
               onPressCall={seeWeatherData}
             />
           </View>
+          <MyWeatherIcon api={api} weatherStatus={weatherStatus} />
           <View style={styles.weatherInfoContainer}>
             <Text style={styles.weatherTempText}>
               {temperature.toFixed(2)} ºC
             </Text>
             <Text style={styles.weatherStatusText}>{weatherStatus}</Text>
           </View>
-          <Image style={styles.weatherIcon} source={weatherIcon} />
+          {/*<Image style={styles.weatherIcon} source={weatherIcon} />*/}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     maxHeight: Dimensions.get('window').height / 4,
     maxWidth: Dimensions.get('window').width / 2,
-    marginVertical: Dimensions.get('window').height / 42,
+    marginTop: Dimensions.get('window').height / 12,
   },
 });
 

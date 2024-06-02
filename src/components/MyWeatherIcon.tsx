@@ -1,27 +1,22 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, Image, StyleSheet, View} from 'react-native';
+import {OPENWEATHERAPI} from '../services/weatherApiInterface';
 
-const iconSunOWAUrl = './src/assets/images/iconSunOWA.png';
-const iconCloudsOWAUrl = './src/assets/images/iconCloudsOWA.png';
-const iconRainOWAUrl = './src/assets/images/iconRain.pngOWA';
-const iconSnowOWAUrl = './src/assets/images/iconSnowOWA.png';
-const iconThunderstormOWAUrl = './src/assets/images/iconThunderstormOWA.png';
-const iconMistOWAUrl = './src/assets/images/iconMistOWA.png';
+/*const iconOWASunUrl = 'src/assets/images/iconOWASun.png';
+const iconOWACloudsUrl = './assets/images/iconOWAClouds.png';
+const iconOWARainUrl = './assets/images/iconOWARain.png';
+const iconOWASnowUrl = './assets/images/iconOWASnow.png';
+const iconOWAThunderstormUrl = './assets/images/iconOWAThunderstorm.png';
+const iconOWAMistUrl = './assets/images/iconOWAMist.png';*/
+
+const iconWASunUrl = './src/assets/images/iconSunWA.png';
+const iconWACloudsUrl = './src/assets/images/iconWAClouds.png';
+const iconWARainUrl = './src/assets/images/iconWARain.png';
+const iconWASnowUrl = './src/assets/images/iconWASnow.png';
+const iconWAThunderstormUrl = './src/assets/images/iconWAThunderstorm.png';
+const iconWAMistUrl = './src/assets/images/iconWAMist.png';
+
 const iconNotFoundUrl = './src/assets/images/iconNotFound.png';
-const iconSunWAUrl = './src/assets/images/iconSunWA.png';
-const iconCloudsWAUrl = './src/assets/images/iconCloudsWA.png';
-const iconRainWAUrl = './src/assets/images/iconRainWA.png';
-const iconSnowWAUrl = './src/assets/images/iconSnowWA.png';
-const iconThunderstormWAUrl = './src/assets/images/iconThunderstormWA.png';
-const iconMistWAUrl = './src/assets/images/iconMistWA.png';
 
 const CLEAR = 'Clear';
 const SUNNY = 'Sunny';
@@ -46,36 +41,71 @@ export const MyWeatherIcon: React.FC<MyWeatherIconProps> = ({
 }) => {
   const [weatherIcon, setWeatherIcon] = useState(iconNotFoundUrl);
 
-  const changeWeatherIcon = (weatherStat: string) => {
-    switch (weatherStat) {
-      case CLEAR:
-      case SUNNY:
-        setWeatherIcon(require(iconSunUrl));
-        break;
-      case CLOUDS:
-      case CLOUDY:
-      case PARTLY_CLOUDY:
-        setWeatherIcon(require(iconCloudsUrl));
-        break;
-      case RAIN:
-      case LIGHT_RAIN:
-      case HEAVY_RAIN:
-        setWeatherIcon(require(iconRainUrl));
-        break;
-      case SNOW:
-        setWeatherIcon(require(iconSnowUrl));
-        break;
-      case THUNDERSTORM:
-        setWeatherIcon(require(iconThunderstormUrl));
-        break;
-      case MIST:
-        setWeatherIcon(require(iconMistUrl));
-        break;
-      default:
-        setWeatherIcon(require(iconNotFoundUrl));
-        break;
+  const changeWeatherIcon = () => {
+    if (api === OPENWEATHERAPI) {
+      /*switch (weatherStatus) {
+        case CLEAR:
+        case SUNNY:
+          setWeatherIcon(require(iconOWASunUrl));
+          break;
+        case CLOUDS:
+        case CLOUDY:
+        case PARTLY_CLOUDY:
+          setWeatherIcon(require(iconOWACloudsUrl));
+          break;
+        case RAIN:
+        case LIGHT_RAIN:
+        case HEAVY_RAIN:
+          setWeatherIcon(require(iconOWARainUrl));
+          break;
+        case SNOW:
+          setWeatherIcon(require(iconOWASnowUrl));
+          break;
+        case THUNDERSTORM:
+          setWeatherIcon(require(iconOWAThunderstormUrl));
+          break;
+        case MIST:
+          setWeatherIcon(require(iconOWAMistUrl));
+          break;
+        default:
+          setWeatherIcon(require(iconNotFoundUrl));
+          break;
+      }*/
+    } else {
+      switch (weatherStatus) {
+        case CLEAR:
+        case SUNNY:
+          setWeatherIcon(require(iconWASunUrl));
+          break;
+        case CLOUDS:
+        case CLOUDY:
+        case PARTLY_CLOUDY:
+          setWeatherIcon(require(iconWACloudsUrl));
+          break;
+        case RAIN:
+        case LIGHT_RAIN:
+        case HEAVY_RAIN:
+          setWeatherIcon(require(iconWARainUrl));
+          break;
+        case SNOW:
+          setWeatherIcon(require(iconWASnowUrl));
+          break;
+        case THUNDERSTORM:
+          setWeatherIcon(require(iconWAThunderstormUrl));
+          break;
+        case MIST:
+          setWeatherIcon(require(iconWAMistUrl));
+          break;
+        default:
+          setWeatherIcon(require(iconNotFoundUrl));
+          break;
+      }
     }
   };
+
+  useEffect(() => {
+    changeWeatherIcon();
+  }, [weatherIcon]);
 
   return (
     <View>
@@ -91,6 +121,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     maxHeight: Dimensions.get('window').height / 4,
     maxWidth: Dimensions.get('window').width / 2,
-    marginVertical: Dimensions.get('window').height / 42,
+    marginTop: Dimensions.get('window').height / 12,
   },
 });
