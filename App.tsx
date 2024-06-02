@@ -4,8 +4,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
-  KeyboardAvoidingView,
-  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -24,8 +22,7 @@ import {
   WEATHERAPI,
   WeatherData,
 } from './src/services/weatherApiInterface';
-import {LocationContext} from './src/contexts/LocationContext';
-import {locations} from './src/components/LocationsList';
+import {MyButton} from './src/components/MyButton';
 
 const iconLocationPinUrl = './src/assets/images/iconLocationPin.png';
 const iconSunUrl = './src/assets/images/iconSun.png';
@@ -124,10 +121,8 @@ function App(): React.JSX.Element {
         style={styles.scrollContainer}
         keyboardShouldPersistTaps="handled">
         <View>
-          <TouchableOpacity style={styles.button} onPress={changeApi}>
-            <Text style={{...styles.text, color: '#fafafa'}}>{api}</Text>
-          </TouchableOpacity>
-          <Text style={{...styles.text, marginVertical: 8}}>
+          <MyButton styling={true} buttonText={api} onPressCall={changeApi} />
+          <Text style={styles.text}>
             Enter a city name and see its weather data
           </Text>
           <View style={styles.locationContainer}>
@@ -141,11 +136,11 @@ function App(): React.JSX.Element {
               value={location}
               onChangeText={value => handleChangeLocation(value)}
             />
-            <TouchableOpacity
-              style={styles.locationOkButton}
-              onPress={seeWeatherData}>
-              <Text style={{...styles.text, color: '#fafafa'}}>Ok</Text>
-            </TouchableOpacity>
+            <MyButton
+              styling={false}
+              buttonText="Ok"
+              onPressCall={seeWeatherData}
+            />
           </View>
           <View style={styles.weatherInfoContainer}>
             <Text style={styles.weatherTempText}>
@@ -175,17 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold',
-  },
-  button: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginVertical: Dimensions.get('window').height / 15,
-    backgroundColor: '#aaaaaa',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    maxHeight: Dimensions.get('window').height / 16,
-    maxWidth: Dimensions.get('window').width / 2,
-    borderRadius: 32,
+    marginVertical: 8,
   },
   locationContainer: {
     flexDirection: 'row',
@@ -195,12 +180,12 @@ const styles = StyleSheet.create({
     maxWidth: Dimensions.get('window').width,
   },
   locationIcon: {
-    flex: 1,
+    flex: 2,
     resizeMode: 'contain',
     alignSelf: 'center',
     maxHeight: Dimensions.get('window').height / 20,
-    maxWidth: Dimensions.get('window').width / 5,
-    marginHorizontal: 8,
+    maxWidth: Dimensions.get('window').width / 3,
+    marginHorizontal: 4,
   },
   locationInput: {
     flex: 10,
@@ -214,18 +199,6 @@ const styles = StyleSheet.create({
     maxHeight: Dimensions.get('window').height / 8,
     maxWidth: Dimensions.get('window').width,
     padding: 8,
-  },
-  locationOkButton: {
-    flex: 2,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginStart: 12,
-    backgroundColor: '#aaaaaa',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    maxHeight: Dimensions.get('window').height / 2,
-    maxWidth: Dimensions.get('window').width / 6,
-    borderRadius: 24,
   },
   weatherInfoContainer: {
     alignItems: 'center',
