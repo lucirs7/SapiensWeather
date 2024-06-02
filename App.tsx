@@ -75,11 +75,7 @@ function App(): React.JSX.Element {
             <MyLocationInput
               location={location}
               handleChangeLocation={handleChangeLocation}
-            />
-            <MyButton
-              styling={false}
-              buttonText="Ok"
-              onPressCall={seeWeatherData}
+              handleOnLocationAccept={seeWeatherData}
             />
           </View>
           <MyWeatherIcon api={api} weatherStatus={weatherStatus} />

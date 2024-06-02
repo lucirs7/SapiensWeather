@@ -1,16 +1,19 @@
 import React from 'react';
 import {Dimensions, Image, StyleSheet, TextInput, View} from 'react-native';
+import {MyButton} from './MyButton';
 
 const iconLocationPinUrl = '../assets/images/iconLocationPin.png';
 
 interface MyLocationInputProps {
   location: string;
   handleChangeLocation: (location: string) => void;
+  handleOnLocationAccept: () => void;
 }
 
 export const MyLocationInput: React.FC<MyLocationInputProps> = ({
   location,
   handleChangeLocation,
+  handleOnLocationAccept,
 }) => {
   return (
     <View style={styles.container}>
@@ -20,6 +23,11 @@ export const MyLocationInput: React.FC<MyLocationInputProps> = ({
         placeholder="Enter a city"
         value={location}
         onChangeText={value => handleChangeLocation(value)}
+      />
+      <MyButton
+        styling={false}
+        buttonText="Ok"
+        onPressCall={handleOnLocationAccept}
       />
     </View>
   );
