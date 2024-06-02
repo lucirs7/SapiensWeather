@@ -1,3 +1,10 @@
+/**
+ *
+ * Component for location input. Contains location pin icon, text input, and 'submit' button.
+ * Modeling these components makes project more clearly built, in case a different way of
+ * inputting location is desired to be used.
+ *
+ */
 import React from 'react';
 import {Dimensions, Image, StyleSheet, TextInput, View} from 'react-native';
 import {MyButton} from './MyButton';

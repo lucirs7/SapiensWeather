@@ -1,3 +1,8 @@
+/**
+ *
+ * Main screen. Contains all UI and its corresponding logic.
+ *
+ */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useCallback, useEffect, useState} from 'react';
 import {
@@ -39,6 +44,10 @@ export default function Home(): React.JSX.Element {
   const [temperature, setTemperature] = useState(0);
   const [weatherStatus, setWeatherStatus] = useState('Weather status');
 
+  /**
+   * Function that gives feedback to user with a Snackbar.
+   * @param message described error.
+   */
   const showErrorMessage = (message: string) => {
     Snackbar.show({
       text: message,
@@ -55,6 +64,9 @@ export default function Home(): React.JSX.Element {
     });
   };
 
+  /**
+   * Function that allows changing API services.
+   */
   const changeApi = () => {
     if (api === WEATHERAPI) {
       setApi(OPENWEATHERAPI);
@@ -67,6 +79,9 @@ export default function Home(): React.JSX.Element {
     setLocation(value);
   };
 
+  /**
+   * Main logic function. Makes API call and sets data with results from call.
+   */
   const seeWeatherData = useCallback(async () => {
     const weatherData: WeatherData | Error = await getWeatherData(
       api,

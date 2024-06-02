@@ -1,3 +1,9 @@
+/**
+ *
+ * Component for weather icon. Helps keep code clearer.
+ * Handles image change according to selected API and weather conditions.
+ *
+ */
 import React, {useEffect, useState} from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {OPENWEATHERAPI} from '../services/weatherApiInterface';

@@ -1,3 +1,8 @@
+/**
+ *
+ * Button component. As different buttons are used in project, main button is built.
+ *
+ */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {

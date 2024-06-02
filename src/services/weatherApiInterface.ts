@@ -1,3 +1,8 @@
+/**
+ *
+ * Interface for API services. This file allows interoperability using different API services.
+ *
+ */
 import {fetchWeatherDataOWA} from './openWeatherApi';
 import {fetchWeatherDataWA} from './weatherApi';
 

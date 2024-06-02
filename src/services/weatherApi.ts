@@ -1,3 +1,8 @@
+/**
+ *
+ * File that handles WeatherAPI functionality.
+ *
+ */
 import axios from 'axios';
 import {WeatherData} from './weatherApiInterface';
 
