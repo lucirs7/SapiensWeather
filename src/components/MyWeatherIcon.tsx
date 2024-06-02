@@ -30,6 +30,7 @@ const HEAVY_RAIN = 'Heavy rain';
 const THUNDERSTORM = 'Thunderstorm';
 const SNOW = 'Snow';
 const MIST = 'Mist';
+const FOG = 'Fog';
 
 interface MyWeatherIconProps {
   api: string;
@@ -67,6 +68,7 @@ export const MyWeatherIcon: React.FC<MyWeatherIconProps> = ({
           setWeatherIcon(require(iconOWAThunderstormUrl));
           break;
         case MIST:
+        case FOG:
           setWeatherIcon(require(iconOWAMistUrl));
           break;
         default:
@@ -97,6 +99,7 @@ export const MyWeatherIcon: React.FC<MyWeatherIconProps> = ({
           setWeatherIcon(require(iconWAThunderstormUrl));
           break;
         case MIST:
+        case FOG:
           setWeatherIcon(require(iconWAMistUrl));
           break;
         default:

@@ -6,7 +6,7 @@ const WEATHERAPI_KEY: string = '0d0bd1cfdcc3425f96175517240206';
 
 export const fetchWeatherDataWA = async (
   location: string,
-): Promise<WeatherData> => {
+): Promise<WeatherData | Error> => {
   try {
     const response = await axios.get(`${WEATHERAPI_URL}/current.json`, {
       params: {
@@ -32,10 +32,10 @@ export const fetchWeatherDataWA = async (
 
     return data;
   } catch (error) {
-    console.error(
+    console.log(
       'weatherApi.ts/fetchWeatherDataWA() - Error fetching weather data:',
       error,
     );
-    throw new Error('Error fecthing weather data from Weather API');
+    return new Error('Error fecthing weather data from Weather API');
   }
 };

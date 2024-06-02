@@ -8,7 +8,7 @@ const KELVIN_TO_CELSIUS: string = '-273,15';
 
 export const fetchWeatherDataOWA = async (
   location: string,
-): Promise<WeatherData> => {
+): Promise<WeatherData | Error> => {
   try {
     const response = await axios.get(`${OPENWEATHER_URL}/weather`, {
       params: {
@@ -34,10 +34,10 @@ export const fetchWeatherDataOWA = async (
 
     return data;
   } catch (error) {
-    console.error(
+    console.log(
       'openWeatherApi.ts/fetchWeatherData() - Error on asking for weather data: ',
       error,
     );
-    throw new Error('Error fecthing weather data from OpenWeather API');
+    return new Error('Error fecthing weather data from OpenWeather API');
   }
 };
