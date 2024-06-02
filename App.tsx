@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -48,35 +49,25 @@ function App(): React.JSX.Element {
     seeWeatherData();
   };
 
-  const seeWeatherData = async () => {
+  const seeWeatherData = useCallback(async () => {
     const weatherData: WeatherData = await fetchWeatherData(location);
 
     if (weatherData !== undefined) {
       let tempValue = weatherData?.temperature;
       tempValue = tempValue + parseFloat(KELVIN_TO_CELSIUS);
 
-      console.log(
-        'app.tsx/seeWeatherData() - Weather in',
-        location,
-        ' is: ',
-        weatherData.weatherStatus,
-        'and temp=',
-        weatherData.temperature,
-        ' k=',
-        parseFloat(KELVIN_TO_CELSIUS),
-      );
       setTemperature(tempValue);
       setWeatherStatus(weatherData.weatherStatus);
-      changeWeatherIcon();
+      changeWeatherIcon(weatherData.weatherStatus);
     }
-  };
+  }, [location]);
 
   useEffect(() => {
     seeWeatherData();
-  }, [location]);
+  }, [location, seeWeatherData]);
 
-  const changeWeatherIcon = () => {
-    switch (weatherStatus) {
+  const changeWeatherIcon = (weatherStat: string) => {
+    switch (weatherStat) {
       case CLEAR:
         setWeatherIcon(require(iconSunUrl));
         break;
@@ -112,15 +103,15 @@ function App(): React.JSX.Element {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.locationButton}
-          onPress={() => chooseLocation('Madrid')}>
+          onPress={() => chooseLocation('Munich')}>
           <Image style={styles.locationIcon} source={require(locationPinUrl)} />
-          <Text style={styles.locationText}>Madrid</Text>
+          <Text style={styles.locationText}>Munich</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.locationButton}
-          onPress={() => chooseLocation('London')}>
+          onPress={() => chooseLocation('Punta Cana')}>
           <Image style={styles.locationIcon} source={require(locationPinUrl)} />
-          <Text style={styles.locationText}>London</Text>
+          <Text style={styles.locationText}>Punta Cana</Text>
         </TouchableOpacity>
         <View style={styles.weatherInfoContainer}>
           <Text style={styles.weatherTempText}>
@@ -128,7 +119,6 @@ function App(): React.JSX.Element {
           </Text>
           <Text style={styles.weatherStatusText}>{weatherStatus}</Text>
         </View>
-        {/*<Image style={styles.weatherIcon} source={require(iconSunUrl)} />*/}
         <Image style={styles.weatherIcon} source={weatherIcon} />
       </View>
     </SafeAreaView>
