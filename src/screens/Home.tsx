@@ -44,9 +44,13 @@ export default function Home(): React.JSX.Element {
       text: message,
       numberOfLines: 10,
       duration: Snackbar.LENGTH_INDEFINITE,
+      backgroundColor: '#c20d0d',
       action: {
         text: 'OK',
         textColor: '#fafafa',
+        onPress: () => {
+          Snackbar.dismiss();
+        },
       },
     });
   };
@@ -69,12 +73,17 @@ export default function Home(): React.JSX.Element {
       location,
     );
 
-    if (weatherData !== undefined) {
+    if (weatherData !== undefined && !(weatherData instanceof Error)) {
       setTemperature(weatherData.temperature);
       setWeatherStatus(weatherData.weatherStatus);
       return;
-    } else if (weatherData === Error) {
-      showErrorMessage('An error occured');
+    } else {
+      showErrorMessage(
+        String(
+          weatherData +
+            '. Check the city you typed or your internet connection.',
+        ),
+      );
     }
   }, [location, api]);
 

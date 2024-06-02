@@ -12,8 +12,8 @@ export interface WeatherData {
 export const getWeatherData = async (
   api: string,
   location: string,
-): Promise<WeatherData> => {
-  let weatherData: WeatherData;
+): Promise<WeatherData | Error> => {
+  let weatherData: WeatherData | Error;
 
   switch (api) {
     case OPENWEATHERAPI:
@@ -23,10 +23,7 @@ export const getWeatherData = async (
       weatherData = await fetchWeatherDataWA(location);
       break;
     default:
-      weatherData = {
-        weatherStatus: '',
-        temperature: 0,
-      };
+      weatherData = new Error('Unsupported API.');
       break;
   }
 
