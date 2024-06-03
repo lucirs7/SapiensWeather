@@ -7,6 +7,7 @@
 import React, {useEffect, useState} from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {OPENWEATHERAPI} from '../services/weatherApiInterface';
+import { NOT_FOUND_WEATHER } from '../screens/Home';
 
 const iconOWASunUrl = '../assets/images/iconOWASun.png';
 const iconOWACloudsUrl = '../assets/images/iconOWAClouds.png';
@@ -77,6 +78,9 @@ export const MyWeatherIcon: React.FC<MyWeatherIconProps> = ({
         case FOG:
           setWeatherIcon(require(iconOWAMistUrl));
           break;
+        case NOT_FOUND_WEATHER:
+          setWeatherIcon(require(iconNotFoundUrl));
+          break;
         default:
           setWeatherIcon(require(iconNotFoundUrl));
           break;
@@ -107,6 +111,9 @@ export const MyWeatherIcon: React.FC<MyWeatherIconProps> = ({
         case MIST:
         case FOG:
           setWeatherIcon(require(iconWAMistUrl));
+          break;
+        case NOT_FOUND_WEATHER:
+          setWeatherIcon(require(iconNotFoundUrl));
           break;
         default:
           setWeatherIcon(require(iconNotFoundUrl));

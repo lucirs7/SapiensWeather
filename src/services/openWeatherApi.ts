@@ -43,6 +43,6 @@ export const fetchWeatherDataOWA = async (
       'openWeatherApi.ts/fetchWeatherData() - Error on asking for weather data: ',
       error,
     );
-    return new Error('Error fecthing weather data from OpenWeather API');
+    return new Error('Error fecthing weather data from server');
   }
 };

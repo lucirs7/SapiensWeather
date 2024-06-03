@@ -41,6 +41,6 @@ export const fetchWeatherDataWA = async (
       'weatherApi.ts/fetchWeatherDataWA() - Error fetching weather data:',
       error,
     );
-    return new Error('Error fecthing weather data from Weather API');
+    return new Error('Error fecthing weather data from server');
   }
 };

@@ -29,8 +29,8 @@ import {MyButton} from '../components/MyButton';
 import {MyWeatherIcon} from '../components/MyWeatherIcon';
 import {MyLocationInput} from '../components/MyLocationInput';
 
-const ZERO_TEMP: string = '--.-- ºC';
-const NOT_FOUND_WEATHER: string = "Couldn't load data...";
+const ZERO_TEMP: string = '-- ºC';
+export const NOT_FOUND_WEATHER: string = "Couldn't load data...";
 
 export default function Home(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,25 +43,25 @@ export default function Home(): React.JSX.Element {
   const [location, setLocation] = useState('');
   const [temperature, setTemperature] = useState(0);
   const [weatherStatus, setWeatherStatus] = useState('Weather status');
+  const [isError, setIsError] = useState(false);
 
   /**
-   * Function that gives feedback to user with a Snackbar.
+   * Function that manages Snackbar state,
+   * which is used to give feedback to user on error.
    * @param message described error.
    */
-  const showErrorMessage = (message: string) => {
-    Snackbar.show({
-      text: message,
-      numberOfLines: 10,
-      duration: Snackbar.LENGTH_INDEFINITE,
-      backgroundColor: '#c20d0d',
-      action: {
-        text: 'OK',
-        textColor: '#fafafa',
-        onPress: () => {
-          Snackbar.dismiss();
-        },
-      },
-    });
+  const handleErrorMessage = (message: string, show: boolean) => {
+    if (show) {
+      Snackbar.show({
+        text: message,
+        numberOfLines: 10,
+        duration: 7500,
+        backgroundColor: '#fe8484',
+        textColor: '#8b0000',
+      });
+    } else {
+      Snackbar.dismiss();
+    }
   };
 
   /**
@@ -91,13 +91,18 @@ export default function Home(): React.JSX.Element {
     if (weatherData !== undefined && !(weatherData instanceof Error)) {
       setTemperature(weatherData.temperature);
       setWeatherStatus(weatherData.weatherStatus);
+      setIsError(false);
+      handleErrorMessage('', false);
       return;
-    } else {
-      showErrorMessage(
+    } else if (weatherData instanceof Error && location.length > 0) {
+      setIsError(true);
+      setWeatherStatus(NOT_FOUND_WEATHER);
+      handleErrorMessage(
         String(
           weatherData +
             '. Check the city you typed or your internet connection.',
         ),
+        true,
       );
     }
   }, [location, api]);
@@ -126,12 +131,10 @@ export default function Home(): React.JSX.Element {
           <MyWeatherIcon api={api} weatherStatus={weatherStatus} />
           <View style={styles.weatherInfoContainer}>
             <Text style={styles.weatherTempText}>
-              {temperature !== undefined
-                ? `${temperature.toFixed(2)} ºC`
-                : ZERO_TEMP}
+              {!isError ? `${temperature.toFixed(2)} ºC` : ZERO_TEMP}
             </Text>
             <Text style={styles.weatherStatusText}>
-              {weatherStatus !== undefined ? weatherStatus : NOT_FOUND_WEATHER}
+              {!isError ? weatherStatus : NOT_FOUND_WEATHER}
             </Text>
           </View>
         </View>
