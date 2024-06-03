@@ -5,13 +5,8 @@
  */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {myButtonStyles} from '../styles/MyButtonStyles';
 
 interface MyButtonProps {
   styling: boolean;
@@ -27,42 +22,14 @@ export const MyButton: React.FC<MyButtonProps> = ({
   return (
     <View>
       <TouchableOpacity
-        style={styling ? styles.button : styles.locationOkButton}
+        style={
+          styling ? myButtonStyles.button : myButtonStyles.locationOkButton
+        }
         onPress={onPressCall}>
-        <Text style={{...styles.text, color: '#fafafa'}}>{buttonText}</Text>
+        <Text style={{...myButtonStyles.text, color: '#fafafa'}}>
+          {buttonText}
+        </Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginVertical: Dimensions.get('window').height / 15,
-    backgroundColor: '#aaaaaa',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    maxHeight: Dimensions.get('window').height / 16,
-    maxWidth: Dimensions.get('window').width / 2,
-    borderRadius: 32,
-  },
-  locationOkButton: {
-    flex: 2,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginStart: 12,
-    backgroundColor: '#aaaaaa',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    maxHeight: Dimensions.get('window').height / 2,
-    maxWidth: Dimensions.get('window').width / 6,
-    borderRadius: 24,
-  },
-  text: {
-    alignSelf: 'center',
-    fontSize: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-});

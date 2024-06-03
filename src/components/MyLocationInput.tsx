@@ -6,8 +6,9 @@
  *
  */
 import React from 'react';
-import {Dimensions, Image, StyleSheet, TextInput, View} from 'react-native';
+import {Image, TextInput, View} from 'react-native';
 import {MyButton} from './MyButton';
+import {myLocationInputStyles} from '../styles/MyLocationInputStyles';
 
 const iconLocationPinUrl = '../assets/images/iconLocationPin.png';
 
@@ -23,10 +24,13 @@ export const MyLocationInput: React.FC<MyLocationInputProps> = ({
   handleOnLocationAccept,
 }) => {
   return (
-    <View style={styles.container}>
-      <Image style={styles.locationIcon} source={require(iconLocationPinUrl)} />
+    <View style={myLocationInputStyles.container}>
+      <Image
+        style={myLocationInputStyles.locationIcon}
+        source={require(iconLocationPinUrl)}
+      />
       <TextInput
-        style={styles.locationInput}
+        style={myLocationInputStyles.locationInput}
         placeholder="Enter a city"
         value={location}
         onChangeText={value => handleChangeLocation(value)}
@@ -39,31 +43,3 @@ export const MyLocationInput: React.FC<MyLocationInputProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  locationIcon: {
-    flex: 2,
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    maxHeight: Dimensions.get('window').height / 20,
-    maxWidth: Dimensions.get('window').width / 3,
-    marginHorizontal: 1,
-  },
-  locationInput: {
-    flex: 10,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-    borderColor: '#e1e1e1',
-    borderBottomWidth: 2,
-    maxHeight: Dimensions.get('window').height / 8,
-    maxWidth: Dimensions.get('window').width,
-    padding: 8,
-  },
-});
