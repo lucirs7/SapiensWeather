@@ -32,7 +32,7 @@ export const fetchWeatherDataWA = async (
     );
     const data: WeatherData = {
       weatherStatus: response.data.current.condition.text,
-      temperature: response.data.current.temp_c,
+      temperature: Number(response.data.current.temp_c).toFixed(2),
     };
 
     return data;

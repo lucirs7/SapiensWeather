@@ -18,6 +18,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import Snackbar from 'react-native-snackbar';
+import NetInfo from '@react-native-community/netinfo';
 
 import {
   getWeatherData,
@@ -29,8 +30,8 @@ import {MyButton} from '../components/MyButton';
 import {MyWeatherIcon} from '../components/MyWeatherIcon';
 import {MyLocationInput} from '../components/MyLocationInput';
 
-const ZERO_TEMP: string = '-- ºC';
-export const NOT_FOUND_WEATHER: string = "Couldn't load data...";
+const NOT_FOUND_TEMPERATURE: string = '--';
+export const NOT_FOUND_WEATHER_STATUS: string = "Couldn't load data...";
 
 export default function Home(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -40,9 +41,15 @@ export default function Home(): React.JSX.Element {
   };
 
   const [api, setApi] = useState(OPENWEATHERAPI);
+
   const [location, setLocation] = useState('');
-  const [temperature, setTemperature] = useState(0);
-  const [weatherStatus, setWeatherStatus] = useState('Weather status');
+
+  const [weatherData, setWeatherData] = useState<WeatherData>({
+    temperature: '0',
+    weatherStatus: 'Weather status',
+  });
+
+  const [isConnected, setIsConnected] = useState(true);
   const [isError, setIsError] = useState(false);
 
   /**
@@ -64,6 +71,32 @@ export default function Home(): React.JSX.Element {
     }
   };
 
+  useEffect(() => {
+    const unsuscribe = NetInfo.addEventListener(state => {
+      if (state.isConnected !== null) {
+        setIsConnected(state.isConnected);
+      }
+    });
+
+    return () => {
+      unsuscribe();
+    };
+  }, []);
+
+  const handleNetConnection = () => {
+    if (isConnected === false) {
+      handleErrorMessage('Check your internet connection.', true);
+      setWeatherData({
+        temperature: NOT_FOUND_TEMPERATURE,
+        weatherStatus: NOT_FOUND_WEATHER_STATUS,
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleNetConnection();
+  }, [isConnected]);
+
   /**
    * Function that allows changing API services.
    */
@@ -83,27 +116,37 @@ export default function Home(): React.JSX.Element {
    * Main logic function. Makes API call and sets data with results from call.
    */
   const seeWeatherData = useCallback(async () => {
-    const weatherData: WeatherData | Error = await getWeatherData(
+    const weatherData_: WeatherData | Error = await getWeatherData(
       api,
       location,
     );
 
-    if (weatherData !== undefined && !(weatherData instanceof Error)) {
-      setTemperature(weatherData.temperature);
-      setWeatherStatus(weatherData.weatherStatus);
+    if (weatherData_ !== undefined && !(weatherData_ instanceof Error)) {
+      setWeatherData({
+        temperature: weatherData_.temperature,
+        weatherStatus: weatherData_.weatherStatus,
+      });
+
       setIsError(false);
       handleErrorMessage('', false);
+
       return;
-    } else if (weatherData instanceof Error && location.length > 0) {
+    } else if (weatherData_ instanceof Error && location.length > 0) {
       setIsError(true);
-      setWeatherStatus(NOT_FOUND_WEATHER);
-      handleErrorMessage(
-        String(
-          weatherData +
-            '. Check the city you typed or your internet connection.',
-        ),
-        true,
-      );
+
+      setWeatherData({
+        temperature: NOT_FOUND_TEMPERATURE,
+        weatherStatus: NOT_FOUND_WEATHER_STATUS,
+      });
+
+      if (isConnected) {
+        handleErrorMessage(
+          String(weatherData_ + '. Check the city you typed.'),
+          true,
+        );
+      } else {
+        handleErrorMessage('Check your internet connection.', true);
+      }
     }
   }, [location, api]);
 
@@ -128,13 +171,16 @@ export default function Home(): React.JSX.Element {
               handleOnLocationAccept={seeWeatherData}
             />
           </View>
-          <MyWeatherIcon api={api} weatherStatus={weatherStatus} />
+          <MyWeatherIcon api={api} weatherStatus={weatherData.weatherStatus} />
           <View style={styles.weatherInfoContainer}>
             <Text style={styles.weatherTempText}>
-              {!isError ? `${temperature.toFixed(2)} ºC` : ZERO_TEMP}
+              {!isError
+                ? `${weatherData.temperature}`
+                : `${NOT_FOUND_TEMPERATURE}`}
+              ºC
             </Text>
             <Text style={styles.weatherStatusText}>
-              {!isError ? weatherStatus : NOT_FOUND_WEATHER}
+              {!isError ? weatherData.weatherStatus : NOT_FOUND_WEATHER_STATUS}
             </Text>
           </View>
         </View>

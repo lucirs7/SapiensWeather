@@ -11,7 +11,7 @@ export const WEATHERAPI: string = 'Weather API';
 
 export interface WeatherData {
   weatherStatus: string;
-  temperature: number;
+  temperature: string;
 }
 
 export const getWeatherData = async (

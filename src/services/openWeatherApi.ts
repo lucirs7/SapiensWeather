@@ -34,7 +34,7 @@ export const fetchWeatherDataOWA = async (
 
     const data: WeatherData = {
       weatherStatus: response.data.weather.at(0).main,
-      temperature: temperatureValue,
+      temperature: Number(temperatureValue).toFixed(2),
     };
 
     return data;
