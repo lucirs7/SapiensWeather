@@ -5,9 +5,7 @@
  */
 import axios from 'axios';
 import {WeatherData} from './weatherApiInterface';
-
-const WEATHERAPI_URL: string = 'http://api.weatherapi.com/v1';
-const WEATHERAPI_KEY: string = '0d0bd1cfdcc3425f96175517240206';
+import {WEATHERAPI_KEY, WEATHERAPI_URL} from '../constants/constants';
 
 export const fetchWeatherDataWA = async (
   location: string,

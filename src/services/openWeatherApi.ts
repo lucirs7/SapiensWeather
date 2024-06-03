@@ -5,11 +5,11 @@
  */
 import axios from 'axios';
 import {WeatherData} from './weatherApiInterface';
-
-const OPENWEATHER_URL: string = 'https://api.openweathermap.org/data/2.5';
-const OPENWEATHER_KEY: string = '35862a50551ab9adbd69336f3ff94a5b';
-
-const KELVIN_TO_CELSIUS: string = '-273,15';
+import {
+  KELVIN_TO_CELSIUS,
+  OPENWEATHER_KEY,
+  OPENWEATHER_URL,
+} from '../constants/constants';
 
 export const fetchWeatherDataOWA = async (
   location: string,

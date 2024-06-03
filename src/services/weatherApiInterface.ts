@@ -3,11 +3,9 @@
  * Interface for API services. This file allows interoperability using different API services.
  *
  */
+import {OPENWEATHERAPI, WEATHERAPI} from '../constants/constants';
 import {fetchWeatherDataOWA} from './openWeatherApi';
 import {fetchWeatherDataWA} from './weatherApi';
-
-export const OPENWEATHERAPI: string = 'Open Weather API';
-export const WEATHERAPI: string = 'Weather API';
 
 export interface WeatherData {
   weatherStatus: string;

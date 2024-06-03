@@ -6,8 +6,7 @@
  */
 import React, {useEffect, useState} from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
-import {OPENWEATHERAPI} from '../services/weatherApiInterface';
-import {NOT_FOUND_WEATHER_STATUS} from '../screens/Home';
+import {OPENWEATHERAPI, NOT_FOUND_WEATHER_STATUS} from '../constants/constants';
 
 const iconOWASunUrl = '../assets/images/iconOWASun.png';
 const iconOWACloudsUrl = '../assets/images/iconOWAClouds.png';
