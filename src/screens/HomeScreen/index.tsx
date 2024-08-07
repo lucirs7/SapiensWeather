@@ -15,20 +15,22 @@ import {
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
+import {Dimensions, StyleSheet} from 'react-native';
+
 import Snackbar from 'react-native-snackbar';
 
-import {getWeatherData, WeatherData} from '../services/weatherApiInterface';
-import {MyButton} from '../components/MyButton';
-import {MyWeatherIcon} from '../components/MyWeatherIcon';
-import {MyLocationInput} from '../components/MyLocationInput';
-import {homeStyles} from '../styles/HomeStyles';
+import {getWeatherData, WeatherData} from '../../services/weatherApiInterface';
+import {MyButton} from '../../components/MyButtonComponent';
+import {MyWeatherIcon} from '../../components/MyWeatherIconComponent';
+import {MyLocationInput} from '../../components/MyLocationInputComponent';
+
 import {
   NOT_FOUND_TEMPERATURE,
   NOT_FOUND_WEATHER_STATUS,
   OPENWEATHERAPI,
   WEATHERAPI,
-} from '../constants/constants';
-import {MyNetConnectionManager} from '../components/MyNetConnectionManager';
+} from '../../constants/constants';
+import {MyNetConnectionManager} from '../../components/MyNetConnectionComponent';
 
 export default function Home(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -39,7 +41,7 @@ export default function Home(): React.JSX.Element {
 
   const [api, setApi] = useState(OPENWEATHERAPI);
 
-  const [location, setLocation] = useState('');
+  //const [location, setLocation] = useState('');
 
   const [weatherData, setWeatherData] = useState<WeatherData>({
     temperature: '0',
@@ -103,7 +105,7 @@ export default function Home(): React.JSX.Element {
   /**
    * Main logic function. Makes API call and sets data with results from call.
    */
-  const seeWeatherData = useCallback(async () => {
+  const seeWeatherData = useCallback(async (location) => {
     const weatherData_: WeatherData | Error = await getWeatherData(
       api,
       location,
@@ -136,7 +138,7 @@ export default function Home(): React.JSX.Element {
         handleErrorMessage('Check your internet connection.', true);
       }
     }
-  }, [location, api]);
+  }, [api]);
 
   useEffect(() => {
     seeWeatherData();
@@ -155,8 +157,6 @@ export default function Home(): React.JSX.Element {
           </Text>
           <View style={homeStyles.locationContainer}>
             <MyLocationInput
-              location={location}
-              handleChangeLocation={handleChangeLocation}
               handleOnLocationAccept={seeWeatherData}
             />
           </View>
@@ -177,3 +177,48 @@ export default function Home(): React.JSX.Element {
     </SafeAreaView>
   );
 }
+
+const homeStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollContainer: {
+    flex: 1,
+    alignSelf: 'center',
+  },
+  text: {
+    alignSelf: 'center',
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginVertical: 8,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    maxHeight: Dimensions.get('window').height / 8,
+    maxWidth: Dimensions.get('window').width,
+  },
+  weatherInfoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: Dimensions.get('window').height / 50,
+  },
+  weatherTempText: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    fontSize: 56,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  weatherStatusText: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    fontSize: 32,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+});
