@@ -6,24 +6,24 @@
  */
 import React, {useEffect, useState} from 'react';
 import {Image, View} from 'react-native';
-import {OPENWEATHERAPI, NOT_FOUND_WEATHER_STATUS} from '../constants/constants';
-import {myWeatherIconStyles} from '../styles/MyWeatherIconStyles';
+import {OPENWEATHERAPI, NOT_FOUND_WEATHER_STATUS} from '../../constants/constants';
+import {myWeatherIconStyles} from './styles';
 
-const iconOWASunUrl = '../assets/images/iconOWASun.png';
-const iconOWACloudsUrl = '../assets/images/iconOWAClouds.png';
-const iconOWARainUrl = '../assets/images/iconOWARain.png';
-const iconOWASnowUrl = '../assets/images/iconOWASnow.png';
-const iconOWAThunderstormUrl = '../assets/images/iconOWAThunderstorm.png';
-const iconOWAMistUrl = '../assets/images/iconOWAMist.png';
+const iconOWASunUrl = '../../assets/images/iconOWASun.png';
+const iconOWACloudsUrl = '../../assets/images/iconOWAClouds.png';
+const iconOWARainUrl = '../../assets/images/iconOWARain.png';
+const iconOWASnowUrl = '../../assets/images/iconOWASnow.png';
+const iconOWAThunderstormUrl = '../../assets/images/iconOWAThunderstorm.png';
+const iconOWAMistUrl = '../../assets/images/iconOWAMist.png';
 
-const iconWASunUrl = '../assets/images/iconWASun.png';
-const iconWACloudsUrl = '../assets/images/iconWAClouds.png';
-const iconWARainUrl = '../assets/images/iconWARain.png';
-const iconWASnowUrl = '../assets/images/iconWASnow.png';
-const iconWAThunderstormUrl = '../assets/images/iconWAThunderstorm.png';
-const iconWAMistUrl = '../assets/images/iconWAMist.png';
+const iconWASunUrl = '../../assets/images/iconWASun.png';
+const iconWACloudsUrl = '../../assets/images/iconWAClouds.png';
+const iconWARainUrl = '../../assets/images/iconWARain.png';
+const iconWASnowUrl = '../../assets/images/iconWASnow.png';
+const iconWAThunderstormUrl = '../../assets/images/iconWAThunderstorm.png';
+const iconWAMistUrl = '../../assets/images/iconWAMist.png';
 
-const iconNotFoundUrl = '../assets/images/iconNotFound.png';
+const iconNotFoundUrl = '../../assets/images/iconNotFound.png';
 
 const CLEAR = 'Clear';
 const SUNNY = 'Sunny';
