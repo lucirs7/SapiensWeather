@@ -9,7 +9,7 @@ import React from 'react';
 import {Image, TextInput, View} from 'react-native';
 import {MyButton} from '../MyButtonComponent';
 import {myLocationInputStyles} from './styles';
-import { useState } from 'react';
+import {useState} from 'react';
 
 const iconLocationPinUrl = '../../assets/images/iconLocationPin.png';
 
@@ -24,7 +24,7 @@ export const MyLocationInput: React.FC<MyLocationInputProps> = ({
 
   const onOkPress = () => {
     handleOnLocationAccept(location);
-  }
+  };
 
   return (
     <View style={myLocationInputStyles.container}>
@@ -38,11 +38,7 @@ export const MyLocationInput: React.FC<MyLocationInputProps> = ({
         value={location}
         onChangeText={setLocation}
       />
-      <MyButton
-        styling={false}
-        buttonText="Ok"
-        onPressCall={onOkPress}
-      />
+      <MyButton styling={false} buttonText="Ok" onPressCall={onOkPress} />
     </View>
   );
 };

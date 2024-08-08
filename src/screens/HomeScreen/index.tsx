@@ -4,23 +4,25 @@
  *
  */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   Text,
   useColorScheme,
   View,
+  ActivityIndicator,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {Dimensions, StyleSheet} from 'react-native';
 
-import Snackbar from 'react-native-snackbar';
+//import Snackbar from 'react-native-snackbar';
+import {Picker} from '@react-native-picker/picker';
 
-import {getWeatherData, WeatherData} from '../../services/weatherApiInterface';
-import {MyButton} from '../../components/MyButtonComponent';
+//import {getWeatherData, WeatherData} from '../../services/weatherApiInterface';
+//import {MyButton} from '../../components/MyButtonComponent';
 import {MyWeatherIcon} from '../../components/MyWeatherIconComponent';
 import {MyLocationInput} from '../../components/MyLocationInputComponent';
 
@@ -32,31 +34,38 @@ import {
 } from '../../constants/constants';
 import {MyNetConnectionManager} from '../../components/MyNetConnectionComponent';
 
+import {useWeatherService} from '../../useWeatherService';
+
 export default function Home(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.black : Colors.white,
   };
 
   const [api, setApi] = useState(OPENWEATHERAPI);
-
-  //const [location, setLocation] = useState('');
-
-  const [weatherData, setWeatherData] = useState<WeatherData>({
-    temperature: '0',
-    weatherStatus: 'Weather status',
-  });
+  const [location, setLocation] = useState('');
+  const whatever = useCallback(() => {}, []);
+  const weatherData = useWeatherService(location, api, whatever);
 
   const [isConnected, setIsConnected] = useState(true);
   const [isError, setIsError] = useState(false);
+
+  const pickerRef = useRef();
+
+  /*const openPicker = () => {
+    pickerRef.current.focus();
+  }
+
+  const closePicker = () => {
+    pickerRef.current.blur();
+  }*/
 
   /**
    * Function that manages Snackbar state,
    * which is used to give feedback to user on error.
    * @param message described error.
    */
-  const handleErrorMessage = (message: string, show: boolean) => {
+  /*const handleErrorMessage = (message: string, show: boolean) => {
     if (show) {
       Snackbar.show({
         text: message,
@@ -68,12 +77,12 @@ export default function Home(): React.JSX.Element {
     } else {
       Snackbar.dismiss();
     }
-  };
+  };*/
 
   /**
    * Function that manages feedback according to internet state.
    */
-  const handleNetConnection = () => {
+  /*const handleNetConnection = () => {
     if (isConnected === false) {
       handleErrorMessage('Check your internet connection.', true);
       setWeatherData({
@@ -85,64 +94,31 @@ export default function Home(): React.JSX.Element {
 
   useEffect(() => {
     handleNetConnection();
-  }, [isConnected]);
+  }, [isConnected]);*/
 
   /**
    * Function that allows changing API services.
    */
-  const changeApi = () => {
-    if (api === WEATHERAPI) {
+  const changeApi = (selectedApi: string) => {
+    /* if (api === WEATHERAPI) {
       setApi(OPENWEATHERAPI);
     } else {
       setApi(WEATHERAPI);
-    }
+    } */
+    setApi(selectedApi);
   };
 
   const handleChangeLocation = (value: string) => {
     setLocation(value);
   };
 
-  /**
-   * Main logic function. Makes API call and sets data with results from call.
-   */
-  const seeWeatherData = useCallback(async (location) => {
-    const weatherData_: WeatherData | Error = await getWeatherData(
-      api,
-      location,
-    );
-
-    if (weatherData_ !== undefined && !(weatherData_ instanceof Error)) {
-      setWeatherData({
-        temperature: weatherData_.temperature,
-        weatherStatus: weatherData_.weatherStatus,
-      });
-
-      setIsError(false);
-      handleErrorMessage('', false);
-
-      return;
-    } else if (weatherData_ instanceof Error && location.length > 0) {
-      setIsError(true);
-
-      setWeatherData({
-        temperature: NOT_FOUND_TEMPERATURE,
-        weatherStatus: NOT_FOUND_WEATHER_STATUS,
-      });
-
-      if (isConnected) {
-        handleErrorMessage(
-          String(weatherData_ + '. Check the city you typed.'),
-          true,
-        );
-      } else {
-        handleErrorMessage('Check your internet connection.', true);
-      }
-    }
-  }, [api]);
-
-  useEffect(() => {
-    seeWeatherData();
+  const seeWeatherData = useCallback(location_ => {
+    setLocation(location_);
   }, []);
+
+  /*useEffect(() => {
+    seeWeatherData();
+  }, []);*/
 
   return (
     <SafeAreaView style={{...homeStyles.container, ...backgroundStyle}}>
@@ -151,25 +127,38 @@ export default function Home(): React.JSX.Element {
         style={homeStyles.scrollContainer}
         keyboardShouldPersistTaps="handled">
         <View>
-          <MyButton styling={true} buttonText={api} onPressCall={changeApi} />
+          {weatherData?.resolving ? <ActivityIndicator /> : undefined}
+          <Picker
+            ref={pickerRef}
+            selectedValue={api}
+            onValueChange={itemValue => {
+              changeApi(itemValue);
+            }}>
+            <Picker.Item label={OPENWEATHERAPI} value={OPENWEATHERAPI} />
+            <Picker.Item label={WEATHERAPI} value={WEATHERAPI} />
+          </Picker>
+          {/*<MyButton styling={true} buttonText={api} onPressCall={changeApi} />*/}
           <Text style={homeStyles.text}>
             Enter a city name and see its weather data
           </Text>
           <View style={homeStyles.locationContainer}>
-            <MyLocationInput
-              handleOnLocationAccept={seeWeatherData}
-            />
+            <MyLocationInput handleOnLocationAccept={seeWeatherData} />
           </View>
-          <MyWeatherIcon api={api} weatherStatus={weatherData.weatherStatus} />
+          <MyWeatherIcon
+            api={api}
+            weatherStatus={weatherData.data?.weatherStatus}
+          />
           <View style={homeStyles.weatherInfoContainer}>
             <Text style={homeStyles.weatherTempText}>
               {!isError
-                ? `${weatherData.temperature}`
+                ? `${weatherData.data?.temperature}`
                 : `${NOT_FOUND_TEMPERATURE}`}
               ºC
             </Text>
             <Text style={homeStyles.weatherStatusText}>
-              {!isError ? weatherData.weatherStatus : NOT_FOUND_WEATHER_STATUS}
+              {!isError
+                ? weatherData.data?.weatherStatus
+                : NOT_FOUND_WEATHER_STATUS}
             </Text>
           </View>
         </View>
