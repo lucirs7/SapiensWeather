@@ -4,7 +4,7 @@
  *
  */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {Suspense, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -36,13 +36,19 @@ import {MyNetConnectionManager} from '../../components/MyNetConnectionComponent'
 
 import {useWeatherService} from '../../useWeatherService';
 
+import {lazy} from 'react';
+
+import WeatherServiceJSON from '../../weatherService.js';
+
+const pickerItems = WeatherServiceJSON.map(value => value.name);
+
 export default function Home(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.black : Colors.white,
   };
 
-  const [api, setApi] = useState(OPENWEATHERAPI);
+  const [api, setApi] = useState('openWeatherAPI');
   const [location, setLocation] = useState('');
   const whatever = useCallback(() => {}, []);
   const weatherData = useWeatherService(location, api, whatever);
@@ -51,6 +57,19 @@ export default function Home(): React.JSX.Element {
   const [isError, setIsError] = useState(false);
 
   const pickerRef = useRef();
+
+  const [component, setComponent] = useState('');
+  //const a = useMemo(() => import(component), [component]);
+  const MarkdownPreview = lazy(() =>
+    component === '' ? Promise.resolve(null) : component,
+  );
+
+  console.log('COMPONENT: ', component);
+
+  useEffect(() => {
+    let weatherService = WeatherServiceJSON.find(value => value.name === api);
+    setComponent(weatherService?.component);
+  }, [api]);
 
   /*const openPicker = () => {
     pickerRef.current.focus();
@@ -122,6 +141,9 @@ export default function Home(): React.JSX.Element {
 
   return (
     <SafeAreaView style={{...homeStyles.container, ...backgroundStyle}}>
+      <Suspense fallback={null}>
+        <MarkdownPreview location={location} />
+      </Suspense>
       <MyNetConnectionManager setIsConnected={setIsConnected} />
       <ScrollView
         style={homeStyles.scrollContainer}
@@ -132,10 +154,13 @@ export default function Home(): React.JSX.Element {
             ref={pickerRef}
             selectedValue={api}
             onValueChange={itemValue => {
-              changeApi(itemValue);
+              setApi(itemValue);
             }}>
-            <Picker.Item label={OPENWEATHERAPI} value={OPENWEATHERAPI} />
-            <Picker.Item label={WEATHERAPI} value={WEATHERAPI} />
+            {pickerItems.map(value => {
+              return <Picker.Item label={value} value={value} />;
+            })}
+            {/*<Picker.Item label={OPENWEATHERAPI} value={OPENWEATHERAPI} />
+            <Picker.Item label={WEATHERAPI} value={WEATHERAPI} />*/}
           </Picker>
           {/*<MyButton styling={true} buttonText={api} onPressCall={changeApi} />*/}
           <Text style={homeStyles.text}>

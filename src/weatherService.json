@@ -1,0 +1,14 @@
+[
+    {
+        "name": "openWeatherAPI",
+        "component": "./services/xyz.tsx"
+    },
+    {
+        "name": "weatherAPI",
+        "component": "./services/abc.tsx"
+    },
+    {
+        "name": "weatherAPI",
+        "component": "./services/abc.tsx"
+    }
+]
