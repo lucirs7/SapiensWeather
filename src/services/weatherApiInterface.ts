@@ -4,8 +4,8 @@
  *
  */
 import {OPENWEATHERAPI, WEATHERAPI} from '../constants/constants';
-import {fetchWeatherDataOWA} from './openWeatherApi';
-import {fetchWeatherDataWA} from './weatherApi';
+import {fetchWeatherDataOWA} from './OLDopenWeatherApi';
+import {fetchWeatherDataWA} from './OLDweatherApi';
 
 export interface WeatherData {
   weatherStatus: string;

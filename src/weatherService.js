@@ -1,14 +1,10 @@
 export default [
   {
-    name: 'openWeatherAPI',
-    component: import('./services/xyz.tsx'),
+    name: 'Open Weather API',
+    component: import('./services/openWeatherApi.tsx'),
   },
   {
-    name: 'weatherAPI',
-    component: import('./services/abc.tsx'),
-  },
-  {
-    name: 'weatherAPI',
-    component: import('./services/abc.tsx'),
+    name: 'Weather API',
+    component: import('./services/weatherApi.tsx'),
   },
 ];

@@ -14,7 +14,7 @@ import {useState} from 'react';
 const iconLocationPinUrl = '../../assets/images/iconLocationPin.png';
 
 interface MyLocationInputProps {
-  handleOnLocationAccept: () => void;
+  handleOnLocationAccept: (location_: string) => void;
 }
 
 export const MyLocationInput: React.FC<MyLocationInputProps> = ({

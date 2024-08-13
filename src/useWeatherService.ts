@@ -8,11 +8,7 @@ type t = {
   resolved?: boolean;
 };
 
-export const useWeatherService = (
-  location: string,
-  api: string,
-  param: () => void,
-) => {
+export const useWeatherService = (location: string, api: string) => {
   const [weatherData, setWeatherData] = useState<t>({
     data: {
       temperature: '0',
@@ -30,7 +26,7 @@ export const useWeatherService = (
       .catch(() => {
         setWeatherData({error: new Error('abc'), resolved: true});
       });
-  }, [location, api, param]);
+  }, [location, api]);
 
   return weatherData;
 };

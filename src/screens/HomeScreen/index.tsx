@@ -4,7 +4,7 @@
  *
  */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {Suspense, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {Suspense, useCallback, useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -21,23 +21,18 @@ import {Dimensions, StyleSheet} from 'react-native';
 //import Snackbar from 'react-native-snackbar';
 import {Picker} from '@react-native-picker/picker';
 
-//import {getWeatherData, WeatherData} from '../../services/weatherApiInterface';
-//import {MyButton} from '../../components/MyButtonComponent';
 import {MyWeatherIcon} from '../../components/MyWeatherIconComponent';
 import {MyLocationInput} from '../../components/MyLocationInputComponent';
 
 import {
   NOT_FOUND_TEMPERATURE,
   NOT_FOUND_WEATHER_STATUS,
-  OPENWEATHERAPI,
-  WEATHERAPI,
 } from '../../constants/constants';
 import {MyNetConnectionManager} from '../../components/MyNetConnectionComponent';
 
-import {useWeatherService} from '../../useWeatherService';
-
 import {lazy} from 'react';
 
+import {useWeatherService} from '../../useWeatherService';
 import WeatherServiceJSON from '../../weatherService.js';
 
 const pickerItems = WeatherServiceJSON.map(value => value.name);
@@ -48,10 +43,10 @@ export default function Home(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.black : Colors.white,
   };
 
-  const [api, setApi] = useState('openWeatherAPI');
+  const [api, setApi] = useState('Open Weather API');
   const [location, setLocation] = useState('');
-  const whatever = useCallback(() => {}, []);
-  const weatherData = useWeatherService(location, api, whatever);
+
+  const weatherData = useWeatherService(location, api);
 
   const [isConnected, setIsConnected] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -59,7 +54,7 @@ export default function Home(): React.JSX.Element {
   const pickerRef = useRef();
 
   const [component, setComponent] = useState('');
-  //const a = useMemo(() => import(component), [component]);
+
   const MarkdownPreview = lazy(() =>
     component === '' ? Promise.resolve(null) : component,
   );
@@ -70,14 +65,6 @@ export default function Home(): React.JSX.Element {
     let weatherService = WeatherServiceJSON.find(value => value.name === api);
     setComponent(weatherService?.component);
   }, [api]);
-
-  /*const openPicker = () => {
-    pickerRef.current.focus();
-  }
-
-  const closePicker = () => {
-    pickerRef.current.blur();
-  }*/
 
   /**
    * Function that manages Snackbar state,
@@ -115,35 +102,12 @@ export default function Home(): React.JSX.Element {
     handleNetConnection();
   }, [isConnected]);*/
 
-  /**
-   * Function that allows changing API services.
-   */
-  const changeApi = (selectedApi: string) => {
-    /* if (api === WEATHERAPI) {
-      setApi(OPENWEATHERAPI);
-    } else {
-      setApi(WEATHERAPI);
-    } */
-    setApi(selectedApi);
-  };
-
   const handleChangeLocation = (value: string) => {
     setLocation(value);
   };
 
-  const seeWeatherData = useCallback(location_ => {
-    setLocation(location_);
-  }, []);
-
-  /*useEffect(() => {
-    seeWeatherData();
-  }, []);*/
-
   return (
     <SafeAreaView style={{...homeStyles.container, ...backgroundStyle}}>
-      <Suspense fallback={null}>
-        <MarkdownPreview location={location} />
-      </Suspense>
       <MyNetConnectionManager setIsConnected={setIsConnected} />
       <ScrollView
         style={homeStyles.scrollContainer}
@@ -159,33 +123,16 @@ export default function Home(): React.JSX.Element {
             {pickerItems.map(value => {
               return <Picker.Item label={value} value={value} />;
             })}
-            {/*<Picker.Item label={OPENWEATHERAPI} value={OPENWEATHERAPI} />
-            <Picker.Item label={WEATHERAPI} value={WEATHERAPI} />*/}
           </Picker>
-          {/*<MyButton styling={true} buttonText={api} onPressCall={changeApi} />*/}
           <Text style={homeStyles.text}>
             Enter a city name and see its weather data
           </Text>
           <View style={homeStyles.locationContainer}>
-            <MyLocationInput handleOnLocationAccept={seeWeatherData} />
+            <MyLocationInput handleOnLocationAccept={handleChangeLocation} />
           </View>
-          <MyWeatherIcon
-            api={api}
-            weatherStatus={weatherData.data?.weatherStatus}
-          />
-          <View style={homeStyles.weatherInfoContainer}>
-            <Text style={homeStyles.weatherTempText}>
-              {!isError
-                ? `${weatherData.data?.temperature}`
-                : `${NOT_FOUND_TEMPERATURE}`}
-              ºC
-            </Text>
-            <Text style={homeStyles.weatherStatusText}>
-              {!isError
-                ? weatherData.data?.weatherStatus
-                : NOT_FOUND_WEATHER_STATUS}
-            </Text>
-          </View>
+          <Suspense fallback={null}>
+            <MarkdownPreview location={location} />
+          </Suspense>
         </View>
       </ScrollView>
     </SafeAreaView>

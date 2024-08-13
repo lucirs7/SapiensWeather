@@ -5,9 +5,8 @@
  *
  */
 import React, {useEffect, useState} from 'react';
-import {Image, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {OPENWEATHERAPI, NOT_FOUND_WEATHER_STATUS} from '../../constants/constants';
-import {myWeatherIconStyles} from './styles';
 
 const iconOWASunUrl = '../../assets/images/iconOWASun.png';
 const iconOWACloudsUrl = '../../assets/images/iconOWAClouds.png';
@@ -122,13 +121,29 @@ export const MyWeatherIcon: React.FC<MyWeatherIconProps> = ({
     }
   };
 
+  console.log('Getting data in weather picture component: ', weatherStatus);
+
   useEffect(() => {
     changeWeatherIcon();
   }, [api, weatherStatus]);
 
   return (
-    <View style={myWeatherIconStyles.container}>
-      <Image style={myWeatherIconStyles.weatherIcon} source={weatherIcon} />
+    <View style={styles.container}>
+      <Image style={styles.weatherIcon} source={weatherIcon} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignSelf: 'center',
+  },
+  weatherIcon: {
+    resizeMode: 'contain',
+    alignSelf: 'center',
+    maxHeight: Dimensions.get('window').height / 4,
+    maxWidth: Dimensions.get('window').width / 2,
+    marginTop: Dimensions.get('window').height / 12,
+  },
+});
