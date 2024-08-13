@@ -227,7 +227,7 @@ const WeatherApi = ({location}) => {
       if (isValid) {
         console.log('API data response is valid!');
       } else {
-        console.log(validate.errors);
+        console.log('There is an error in API data: ', validate.errors);
       }
       const data: WeatherData = {
         weatherStatus: response.data.current.condition.text,
