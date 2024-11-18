@@ -7,22 +7,25 @@
  */
 import React from 'react';
 import {Image, TextInput, View} from 'react-native';
-import {MyButton} from './MyButton';
-import {myLocationInputStyles} from '../styles/MyLocationInputStyles';
+import {MyButton} from '../MyButtonComponent';
+import {myLocationInputStyles} from './styles';
+import {useState} from 'react';
 
-const iconLocationPinUrl = '../assets/images/iconLocationPin.png';
+const iconLocationPinUrl = '../../assets/images/iconLocationPin.png';
 
 interface MyLocationInputProps {
-  location: string;
-  handleChangeLocation: (location: string) => void;
   handleOnLocationAccept: () => void;
 }
 
 export const MyLocationInput: React.FC<MyLocationInputProps> = ({
-  location,
-  handleChangeLocation,
   handleOnLocationAccept,
 }) => {
+  const [location, setLocation] = useState('');
+
+  const onOkPress = () => {
+    handleOnLocationAccept(location);
+  };
+
   return (
     <View style={myLocationInputStyles.container}>
       <Image
@@ -33,13 +36,9 @@ export const MyLocationInput: React.FC<MyLocationInputProps> = ({
         style={myLocationInputStyles.locationInput}
         placeholder="Enter a city"
         value={location}
-        onChangeText={value => handleChangeLocation(value)}
+        onChangeText={setLocation}
       />
-      <MyButton
-        styling={false}
-        buttonText="Ok"
-        onPressCall={handleOnLocationAccept}
-      />
+      <MyButton styling={false} buttonText="Ok" onPressCall={onOkPress} />
     </View>
   );
 };
