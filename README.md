@@ -12,7 +12,7 @@ The app is made up of just one single screen in which the following components a
 - A text that shows this weather status.
 - A text that shows temperature value in ºC.
 
-![Home](src/assets/screenshots/noSearch.png) ![Sunny 1](src/assets/screenshots/sunny1.png) ![Rainy 1](src/assets/screenshots/rainy1.png)
+![Home](src/assets/screenshots/iconNotFound.png) ![Sunny 1](src/assets/screenshots/sunny1.png) ![Rainy 1](src/assets/screenshots/rainy1.png)
 
 ## How it works
 
