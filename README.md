@@ -12,6 +12,8 @@ The app is made up of just one single screen in which the following components a
 - A text that shows this weather status.
 - A text that shows temperature value in ºC.
 
+![Home](src/assets/screenshots/noSearch.png) ![Sunny 1](src/assets/screenshots/sunny1.png) ![Rainy 1](src/assets/screenshots/rainy1.png)
+
 ## How it works
 
 User may choose API service by clicking the top button. Then it would type desired location in text input, and once it is finished, it would submit by clicking 'ok' button. This makes a call to server and weather data is returned. Once data is obtained from server response, it is shown on screen as weather status and temperature value.
